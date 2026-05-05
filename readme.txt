@@ -1,3 +1,7 @@
+お世話になりました．正式に，休眠とさせていただきます．またいつか．
+
+Thank you for everyones supporting. This repository shuts down officialy. "Hasta la vista, baby."
+
 How to compile
 --------------
 
