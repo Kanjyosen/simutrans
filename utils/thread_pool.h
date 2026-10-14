@@ -6,12 +6,13 @@
 #ifndef UTILS_THREAD_POOL_H
 #define UTILS_THREAD_POOL_H
 
+#include <functional>
+
 #ifdef MULTI_THREAD
 
 #include <pthread.h>
 #include <vector>
 #include <queue>
-#include <functional>
 #include "../utils/simthread.h"
 
 /**

@@ -370,8 +370,12 @@ money_frame_t::money_frame_t(player_t *player) :
 		sprintf(send_money_format_str,"0");
 		send_money_format.set_text_pointer(send_money_format_str);
 		add_component(&send_money_format);
+		
+		add_component(&writedown_csv);
+		writedown_csv.init(button_t::roundbox, "");
+		writedown_csv.add_listener(this);
+		writedown_csv.set_text(translator::translate("Writedown as csv"));
 
-		new_component<gui_fill_t>();
 
 
 		new_component<gui_label_t>("Sending money to another player");
@@ -720,11 +724,35 @@ bool money_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 				write_money_cents.set_value(0);
 			}
 		}
+	}
+	if(  comp == &writedown_csv  ){
+		FILE *printing_note;
+		char *pn_name = "finance_note.csv";
+		uint8 MYF_length = 12;
+		sint64 monthly_year_fdata;
+
+		printing_note = fopen( pn_name, "w");
+		if( printing_note == NULL){
+			DBG_MESSAGE("money_frame_t", "File \"%s\" couldn't be opened", pn_name);
+		}else{
+			for (int x = 0;x <= MAX_PLAYER_COST_BUTTON - 1; x++){
+				uint8 tt = cost_type[(x*3)+1] == TT_ALL ? transport_type_option : cost_type[(x*3)+1];
+				fprintf(printing_note, "%s", cost_type_name[x]);
+				for (int z = 0;z <= MYF_length - 1; z++){
+					monthly_year_fdata = get_statistics_value(tt, cost_type[(x*3)], z, 1); //Change HERE to switch read direc.
+					DBG_MESSAGE("money_frame_t", "%s[%d] : %lld",cost_type_name[x], z, monthly_year_fdata);                 //NOT HERE!
+					fprintf(printing_note, ",%lld", monthly_year_fdata);
+				}
+				fprintf(printing_note, "\n");
+			}
+		}
+		fclose(printing_note);
+	}
 
 		if(welt->get_active_player_nr() != 1 && welt->get_active_player()->get_finance()->get_account_balance()/get_balance_divisor() <= 2000000000 && write_money.get_value() >= welt->get_active_player()->get_finance()->get_account_balance()/get_balance_divisor()){
 			write_money.set_value(welt->get_active_player()->get_finance()->get_account_balance()/get_balance_divisor());
 		}
-	}
+	
 	return false;
 }
 

@@ -63,6 +63,8 @@ private:
 	gui_label_t send_money_format;
 	char send_money_format_str[30];
 
+	button_t writedown_csv;
+
 	uint8 viewable_players[MAX_PLAYER_COUNT];
 	gui_combobox_t send_money_player_num;
 	gui_numberinput_t write_money;
