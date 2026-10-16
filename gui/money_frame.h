@@ -87,6 +87,8 @@ private:
 
 	bool is_chart_table_zero(int ttoption);
 
+	const char* file_name;
+
 
 public:
 	/**

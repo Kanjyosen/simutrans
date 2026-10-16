@@ -727,7 +727,9 @@ bool money_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 	}
 	if(  comp == &writedown_csv  ){
 		FILE *printing_note;
-		char *pn_name = "finance_note.csv";
+		char pn_name[512];
+		snprintf(pn_name, 512, "finance_%s_%d-%d.csv", file_name, welt->get_last_year(), welt->get_last_month());
+		//char *pn_name = "finance_note.csv";
 		uint8 MYF_length = 12;
 		sint64 monthly_year_fdata;
 
@@ -773,6 +775,8 @@ uint32 money_frame_t::get_rdwr_id()
 
 void money_frame_t::rdwr( loadsave_t *file )
 {
+	file_name = file->get_filename();
+
 	// button-to-chart array
 	button_to_chart.rdwr(file);
 

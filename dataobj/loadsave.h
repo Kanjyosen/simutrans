@@ -224,6 +224,8 @@ public:
 			x = (X)int_x;
 		}
 	}
+
+	const char *get_filename() const {return filename.c_str();}
 };
 
 
