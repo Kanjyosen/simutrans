@@ -204,6 +204,11 @@ const char * transport_type_values[TT_MAX] = {
 	"Powerlines",
 };
 
+const char * finance_csv_term_values[2] = {
+	"Year",
+	"2 Years",
+};
+
 /// Helper method to query data from players statistics
 sint64 money_frame_t::get_statistics_value(int tt, uint8 type, int yearmonth, bool monthly)
 {
@@ -356,7 +361,21 @@ money_frame_t::money_frame_t(player_t *player) :
 		top->set_focus( &transport_type_c );
 		set_focus(top);
 
-		new_component<gui_fill_t>();
+		//new_component<gui_fill_t>();
+		
+		finance_csv_terms_c.set_selection(0);
+		finance_csv_terms_c.set_focusable( false );
+
+		for (int i=0, count=0; i<2; ++i) {
+			finance_csv_terms_c.new_component<gui_scrolled_list_t::const_text_scrollitem_t>(translator::translate(finance_csv_term_values[i]), SYSCOL_TEXT);
+		}
+
+		add_component(&finance_csv_terms_c);
+		finance_csv_terms_c.add_listener( this );
+
+		finance_csv_terms_c.set_selection(0);
+		top->set_focus( &finance_csv_terms_c );
+		set_focus(top);
 
 		add_component(&headquarter);
 		headquarter.init(button_t::roundbox, "");
@@ -728,10 +747,22 @@ bool money_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 	if(  comp == &writedown_csv  ){
 		FILE *printing_note;
 		char pn_name[512];
-		snprintf(pn_name, 512, "finance_%s_%d-%d.csv", file_name, welt->get_last_year(), welt->get_last_month());
 		//char *pn_name = "finance_note.csv";
-		uint8 MYF_length = 12;
+		//uint8 MYF_length = 12;
+		uint8 MYF_length = 0;
+		if ( finance_csv_terms_c.get_selection() == 0 ){
+			MYF_length = 12;
+		}else if ( finance_csv_terms_c.get_selection() == 1){
+			MYF_length = 24;
+		}else if (finance_csv_terms_c.get_selection() == 2){
+			MYF_length = MAX_PLAYER_HISTORY_MONTHS;
+		}else{
+			MYF_length = 0;
+			DBG_MESSAGE("money_frame_t", "finance_csv_terms_c wasn't selected.");
+		}
 		sint64 monthly_year_fdata;
+
+		snprintf(pn_name, 512, "finance_%s_%d-%d_%s.csv", file_name, welt->get_last_year(), welt->get_last_month(), finance_csv_term_values[finance_csv_terms_c.get_selection()]);
 
 		printing_note = fopen( pn_name, "w");
 		if( printing_note == NULL){

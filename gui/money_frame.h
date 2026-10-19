@@ -51,6 +51,8 @@ private:
 	uint16 transport_type_option;
 	gui_combobox_t transport_type_c;
 
+	gui_combobox_t finance_csv_terms_c;
+
 	player_t *player;
 
 	void calc_chart_values();
