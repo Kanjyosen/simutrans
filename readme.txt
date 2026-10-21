@@ -24,6 +24,9 @@ Thank you for everyones supporting. This repository shuts down officialy. "Hasta
 書き忘れた。OTRP本家へのPRは基本しないつもりです。一応最新版を引っ張ってきましたが、向こうと話をしていない状態でPRを投げても迷惑ですからね。
 ソースコードに用があれば好きにもってってください。オープンソースはそういうもんだと思っていますので。
 
+2026.10.22
+このリポジトリで作っているものについて、「Simutrans Tandemarrow」と呼ぶことにしました。ただの自己満足です。
+
 以下元ﾘﾎﾟｼﾞﾄﾘの文面そのままです。実際はちょっとちがかったような...試行錯誤で初回makeをしてそのままなので、なんとも...
 
 How to compile
