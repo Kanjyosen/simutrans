@@ -768,6 +768,22 @@ bool money_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 		if( printing_note == NULL){
 			DBG_MESSAGE("money_frame_t", "File \"%s\" couldn't be opened", pn_name);
 		}else{
+			//writing top-label
+			fprintf(printing_note, "Type,");
+			int recent_year = welt->get_last_year();
+			int recent_month = welt->get_last_month() + 1;
+
+			//writing date-label
+			for (int z = 1;z <= MYF_length; z++){
+				fprintf(printing_note, "%d-%d,", recent_year, recent_month);
+				recent_month--;
+				if (recent_month == 0){
+					recent_year--;
+					recent_month = 12;
+				}
+			}
+			fprintf(printing_note, "\n");
+			//writing data
 			for (int x = 0;x <= MAX_PLAYER_COST_BUTTON - 1; x++){
 				uint8 tt = cost_type[(x*3)+1] == TT_ALL ? transport_type_option : cost_type[(x*3)+1];
 				fprintf(printing_note, "%s", cost_type_name[x]);
